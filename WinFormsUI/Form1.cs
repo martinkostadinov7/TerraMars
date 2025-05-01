@@ -23,15 +23,15 @@ namespace WinFormsUI
             }
             dataGridView1.Size = new System.Drawing.Size(y * tileSize + 25, x * tileSize + 25);
 
-            for (int row = 0; row < Map.Tiles.GetLength(0); row++)
-            {
-                for (int col = 0; col < Map.Tiles.GetLength(1); col++)
-                {
-                    var tile = Map.Tiles[row, col];
-                    var cell = dataGridView1.Rows[row].Cells[col];
-                    cell.Style.BackColor = tile.Color;
-                }
-            }
+            //for (int row = 0; row < Map.Tiles.GetLength(0); row++)
+            //{
+            //    for (int col = 0; col < Map.Tiles.GetLength(1); col++)
+            //    {
+            //        var tile = Map.Tiles[row, col];
+            //        var cell = dataGridView1.Rows[row].Cells[col];
+            //        cell.Style.BackColor = tile.Color;
+            //    }
+            //}
         }
 
         private void Form1_Load_1(object sender, EventArgs e)

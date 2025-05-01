@@ -1,27 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLayer
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
+
+        [Required]
+        [Range(3,50)]
+        public string Username { get; set; }
+
+        [Required]
+        [Range(8, 16)]
         public string Password { get; set; }
-        public List<Map> Maps { get; set; }
+
+        public List<Map> Maps { get; set; } = new List<Map>();
+
         private User()
         {
-            Maps = new List<Map>();
         }
 
-        public User(string name, string password)
+        public User(string username, string password)
         {
-            Name = name;
+            Username = username;
             Password = password;
-            Maps = new List<Map>();
         }
     }
 }

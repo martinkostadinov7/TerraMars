@@ -11,33 +11,14 @@ namespace ServiceLayer
 {
     public class MapService
     {
-        Random rnd = new Random();
-        Map Map { get; set; }
-
-        MapContext context;
-        public MapService() 
-        {
-            context = new MapContext(new GameDbContext());
-        }
-        public Map GenerateMap(int x, int y)
-        {
-            Color[] marsColors = new Color[]
+        private static Color[] marsSurfaceColors =
             {
                 Color.OrangeRed,
                 Color.SandyBrown,
                 Color.LightSalmon,
                 Color.DarkSalmon,
             };
-            Map = new Map(new User("test", "123"), x, y);
-            for (int i = 0; i < Map.Tiles.GetLength(0); i++)
-            {
-                for (int j = 0; j < Map.Tiles.GetLength(1); j++)
-                {
-                    Map.Tiles[i, j] = new Tile(i, j, marsColors[rnd.Next(0, marsColors.Length)], TileType.MarsSurface, Map);
-                }
-            }
-            int stoneCount = rnd.Next(3, (x + y)/ 2);
-            Color[] stoneColors = new Color[]
+        private static Color[] stoneColors =
             {
                 Color.DarkGray,
                 Color.DimGray,
@@ -45,9 +26,36 @@ namespace ServiceLayer
                 Color.SlateGray,
                 Color.LightGray,
             };
-            GenerateStoneFormation();    
+        Random rnd = new Random();
+
+        MapContext context;
+        public MapService() 
+        {
+            context = new MapContext(new GameDbContext());
+        }
+        public Tile[,] GenerateMap(User user, int x, int y)
+        {
+            Map map = new Map(user, x, y);
+            Tile[,] matrix = new Tile[x, y];
+
+            //generating mars surface
+            for (int i = 0; i < map.Height; i++)
+            {
+                for (int j = 0; j < map.Width; j++)
+                {
+                    Tile tile = new Tile(i, j, marsSurfaceColors[rnd.Next(0, marsSurfaceColors.Length)], TileType.MarsSurface, map);
+                    map.Tiles.Add(tile);
+                    matrix[i, j] = tile;
+                }
+            }
+
+            //generating stones
+            int stoneCount = rnd.Next(3, (x + y)/ 2);
             
-            return Map;
+            GenerateStoneFormation();
+
+            context.Create(map);
+            return matrix;
         }
 
         private void GenerateStoneFormation()

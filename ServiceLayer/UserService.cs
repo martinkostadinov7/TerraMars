@@ -13,10 +13,18 @@ namespace ServiceLayer
         UserContext userContext;
         public UserService()
         {
-            userContext = new UserContext(new GameDbContext());
+            userContext = new UserContext(DbContextHelper.GetDbContext());
+        }
+        public UserService(UserContext userContext)
+        {
+            this.userContext = userContext;
         }
         public void AddUser(string username, string password)
         {
+            if(userContext.ReadAll().FirstOrDefault(x => x.Username == username) != null)
+            {
+                throw new Exception("User is already used!");
+            }
             ValidateUserData(username, password);
             userContext.Create(new User(username, password));
         }
@@ -25,27 +33,27 @@ namespace ServiceLayer
         {
             if (username.Length > 50)
             {
-                throw new ArgumentException("Maximum Username length is 50!");
+                throw new Exception("Maximum Username length is 50!");
             }
             if (password.Length > 16)
             {
-                throw new ArgumentException("Maximum Password length is 16!");
+                throw new Exception("Maximum Password length is 16!");
             }
-            if (password.Length < 8)
+            if (password.Length < 3)
             {
-                throw new ArgumentException("Minimum Password length is 8!");
+                throw new Exception("Minimum Password length is 3!");
             }
             if (username.Length < 3)
             {
-                throw new ArgumentException("Minimum Username length is 3!");
+                throw new Exception("Minimum Username length is 3!");
             }
-            if (!string.IsNullOrEmpty(username))
+            if (string.IsNullOrEmpty(username))
             {
-                throw new ArgumentException("Invalid Username!");
+                throw new Exception("Invalid Username!");
             }
-            if (!string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(password))
             {
-                throw new ArgumentException("Invalid Password!");
+                throw new Exception("Invalid Password!");
             }
         }
 
@@ -62,5 +70,9 @@ namespace ServiceLayer
             User userFromDb = userContext.Read(id);
             userContext.Delete(userFromDb.Id);
         }
+        public User GetUser(string username, string password)
+        {
+            return userContext.ReadAll().FirstOrDefault(x => x.Username == username && x.Password == password);
+        } 
     }
 }

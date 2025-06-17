@@ -18,15 +18,22 @@ namespace BusinessLayer
         UndergroundWater,
         Ice
     }
+    public enum Level
+    {
+        Ground,
+        Underground,
+    }
     public class Tile
     {
         [Key]
         public int Id { get; set; }
+        [Required]
+        public bool IsPlacable { get; set; }
 
-        [Range(0, 99)]
+        [Range(0, 70)]
         public int X { get; set; }
 
-        [Range(0, 99)]
+        [Range(0, 40)]
         public int Y { get; set; }
 
         [Required]
@@ -36,6 +43,11 @@ namespace BusinessLayer
         public TileType Type { get; set; }
 
         [Required]
+        public Level Level { get; set; }
+
+        [Required]
+        public bool IsVisible { get; set; }
+        [Required]
         public int MapId { get; set; }
 
         [ForeignKey(nameof(MapId))]
@@ -43,14 +55,17 @@ namespace BusinessLayer
 
         private Tile() { }
 
-        public Tile(int x, int y, Color color, TileType type, Map map)
+        public Tile(int x, int y, Color color, TileType type,Level level, bool isVisible, Map map, bool isPlacable)
         {
             X = x;
             Y = y;
             Color = color;
             Type = type;
+            Level = level;
+            IsVisible = isVisible;
             Map = map;
             MapId = map.Id;
+            IsPlacable = isPlacable;
         }
     }
 }

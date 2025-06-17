@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer;
+using Microsoft.EntityFrameworkCore;
 namespace DataLayer
 {
     public class MapContext : IDb<Map, int>
@@ -29,7 +30,13 @@ namespace DataLayer
 
         public Map Read(int key)
         {
-            Map Map = dbContext.Maps.Find(key);
+            IQueryable<Map> query = dbContext.Maps;
+            query = query
+            .Include(b => b.Tiles)
+            .Include(b => b.Structures);
+            
+            Map Map = query.FirstOrDefault(m => m.Id == key);
+
             if (Map == null)
             {
                 throw new InvalidOperationException($"Map with id {key} does not exist!");
@@ -39,7 +46,11 @@ namespace DataLayer
 
         public List<Map> ReadAll()
         {
-            return dbContext.Maps.ToList();
+            IQueryable<Map> query = dbContext.Maps;
+            query = query
+            .Include(b => b.Tiles)
+            .Include(b => b.Structures);
+            return query.ToList();
         }
 
         public void Update(Map item)

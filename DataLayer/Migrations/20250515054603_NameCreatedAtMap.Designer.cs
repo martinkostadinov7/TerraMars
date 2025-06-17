@@ -4,6 +4,7 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(GameDbContext))]
-    partial class GameDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250515054603_NameCreatedAtMap")]
+    partial class NameCreatedAtMap
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,17 +39,11 @@ namespace DataLayer.Migrations
                     b.Property<int>("Height")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoneGathered")
                         .HasColumnType("int");
 
                     b.Property<int>("Width")
@@ -108,9 +105,6 @@ namespace DataLayer.Migrations
 
                     b.Property<bool>("IsVisible")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
 
                     b.Property<int>("MapId")
                         .HasColumnType("int");

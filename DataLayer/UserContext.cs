@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer;
+using Microsoft.EntityFrameworkCore;
 namespace DataLayer
 {
     public class UserContext : IDb<User, int>
@@ -30,17 +31,25 @@ namespace DataLayer
 
         public User Read(int key)
         {
-            User user = dbContext.Users.Find(key);
-            if (user == null)
+            IQueryable<User> query = dbContext.Users;
+            query = query
+            .Include(b => b.Maps);
+
+            User User = query.FirstOrDefault(m => m.Id == key);
+
+            if (User == null)
             {
                 throw new InvalidOperationException($"User with id {key} does not exist!");
             }
-            return user;
+            return User;
         }
 
         public List<User> ReadAll()
         {
-            return dbContext.Users.ToList();
+            IQueryable<User> query = dbContext.Users;
+            query = query
+            .Include(b => b.Maps);
+            return query.ToList();
         }
 
         public void Update(User item)

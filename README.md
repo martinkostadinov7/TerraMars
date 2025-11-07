@@ -74,11 +74,6 @@ Each map includes terrain data and placed objects.
 
 ---
 
-## Credits
-Developed by **Martin Kostadinov**  
-© 2025 TerraMars Project. All rights reserved.
-
----
 
 ## License
 This project is licensed under the [MIT License](LICENSE).

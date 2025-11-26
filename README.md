@@ -49,6 +49,11 @@ The game features a dynamic grid-based world, user account system, and real-time
    Keep your favorite creations and return to them anytime.  
 
 ---
+## Screenshots
+![Screenshot](images/Picture1.png)
+![Screenshot](images/Picture2.png)
+![Screenshot](images/Picture3.png)
+--
 
 ## Data Persistence
 User accounts and maps are stored in a database.  
